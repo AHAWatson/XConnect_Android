@@ -2,12 +2,14 @@ package com.xpanxion.xconnect
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.AsyncTask
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import com.xpanxion.directory.DirectoryActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -120,7 +122,7 @@ class LoginActivity : AppCompatActivity() {
             showProgress(false)
 
             if (success) {
-                //valid login
+                startActivity(Intent(this@LoginActivity, DirectoryActivity::class.java))
             } else {
                 //invalid login
             }
