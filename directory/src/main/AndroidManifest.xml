@@ -5,7 +5,6 @@
     <application>
         <activity
             android:name=".DirectoryActivity"
-            android:label="@string/nav_directory_placeholder"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 

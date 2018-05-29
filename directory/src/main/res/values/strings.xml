@@ -5,8 +5,6 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="nav_directory_placeholder">Directory</string>
-
     <!-- Temporary String Resources -->
     <string name="nav_bench_report_text">Bench Report</string>
     <string name="nav_partial_utilization_text">Partial Utilization Report</string>
