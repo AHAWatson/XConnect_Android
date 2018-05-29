@@ -58,12 +58,12 @@ object DummyContent {
 
     private fun createFalseAvailability(): Availability {
         val points = listOf(
-                Random().nextInt(100).toFloat(),
-                Random().nextInt(100).toFloat(),
-                Random().nextInt(100).toFloat(),
-                Random().nextInt(100).toFloat(),
-                Random().nextInt(100).toFloat(),
-                Random().nextInt(100).toFloat()
+                Random().nextInt(3) * 50.toFloat(),
+                Random().nextInt(3) * 50.toFloat(),
+                Random().nextInt(3) * 50.toFloat(),
+                Random().nextInt(3) * 50.toFloat(),
+                Random().nextInt(3) * 50.toFloat(),
+                Random().nextInt(3) * 50.toFloat()
         )
         return Availability(points)
     }

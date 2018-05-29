@@ -1,8 +1,8 @@
 package com.xpanxion.architecture
 
-data class Availability(val points: List<Float>){
+data class Availability(val rawData: List<Float>){
     init {
-        if(points.size > 6){
+        if(rawData.size > 6){
             throw IllegalArgumentException("No more than six months of availability permitted")
         }
     }
