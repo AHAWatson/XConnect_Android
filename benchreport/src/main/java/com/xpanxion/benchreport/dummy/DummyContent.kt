@@ -27,7 +27,7 @@ object DummyContent {
                 createFalseRole(),
                 createFalseName(),
                 createFalseLocation(),
-                Availability()
+                createFalseAvailability()
         )
     }
 
@@ -54,5 +54,17 @@ object DummyContent {
 
     private fun createFalseLocation(): Location {
         return Location.values()[Random().nextInt(Location.values().size)]
+    }
+
+    private fun createFalseAvailability(): Availability {
+        val points = listOf(
+                Random().nextInt(100).toFloat(),
+                Random().nextInt(100).toFloat(),
+                Random().nextInt(100).toFloat(),
+                Random().nextInt(100).toFloat(),
+                Random().nextInt(100).toFloat(),
+                Random().nextInt(100).toFloat()
+        )
+        return Availability(points)
     }
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.xpanxion.architecture.AvailabilityGraph
 import com.xpanxion.architecture.Person
 import com.xpanxion.benchreport.BenchFragment.OnListFragmentInteractionListener
 import kotlinx.android.synthetic.main.person_list_item.view.*
@@ -33,6 +34,7 @@ class BenchItemRecyclerViewAdapter(
         val person = values[position]
         holder.nameTextView.text = person.name.toString()
         holder.roleTextView.text = person.role.toString()
+        holder.availabilityGraph.availability = person.availability.points
         with(holder.view) {
             tag = person
             setOnClickListener(mOnClickListener)
@@ -44,6 +46,7 @@ class BenchItemRecyclerViewAdapter(
     inner class PersonViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val nameTextView: TextView = view.person_name
         val roleTextView: TextView = view.person_role
+        val availabilityGraph: AvailabilityGraph = view.availability_graph
 
         override fun toString(): String {
             return super.toString() + " '" + nameTextView.text + "'"
