@@ -7,12 +7,13 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.xpanxion.architecture.Person
 import com.xpanxion.architecture.TitledFragment
 import com.xpanxion.benchreport.BenchFragment
 import kotlinx.android.synthetic.main.directory_layout.*
 
-class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, BenchFragment.OnListFragmentInteractionListener {
+class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, BenchFragment.BenchFragmentManager {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +21,7 @@ class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         val fragment = BenchFragment()
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment)
+        transaction.replace(R.id.fragment_container, fragment, BenchFragment.TAG)
         transaction.commit()
         setSupportActionBar(toolbar)
 
@@ -56,7 +57,7 @@ class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 fragment = BenchFragment()
             }
         }
-        fragment?.let{frag ->
+        fragment?.let { frag ->
             toolbar.title = fragment.title
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragment_container, frag)

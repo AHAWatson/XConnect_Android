@@ -7,14 +7,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.xpanxion.architecture.AvailabilityGraph
 import com.xpanxion.architecture.Person
-import com.xpanxion.benchreport.BenchFragment.OnListFragmentInteractionListener
 import kotlinx.android.synthetic.main.person_list_item.view.*
 
 class BenchItemRecyclerViewAdapter(
-        private val values: List<Person>,
-        private val listener: OnListFragmentInteractionListener?
+        benchData: BenchData,
+        private val listener: BenchFragment.BenchFragmentManager?
 ) : RecyclerView.Adapter<BenchItemRecyclerViewAdapter.PersonViewHolder>() {
-
+    private val values: List<Person> = benchData.getSortedFilteredData()
     private val mOnClickListener: View.OnClickListener
 
     init {
@@ -34,7 +33,7 @@ class BenchItemRecyclerViewAdapter(
         val person = values[position]
         holder.nameTextView.text = person.name.toString()
         holder.roleTextView.text = person.role.toString()
-        holder.availabilityGraph.months = DummyBenchData.MONTHS
+        holder.availabilityGraph.months = person.availability.months
         holder.availabilityGraph.availability = person.availability.rawData
         with(holder.view) {
             tag = person

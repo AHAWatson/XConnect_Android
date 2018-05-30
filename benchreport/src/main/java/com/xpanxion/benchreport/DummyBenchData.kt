@@ -3,24 +3,26 @@ package com.xpanxion.benchreport
 import com.xpanxion.architecture.*
 import java.util.*
 
-object DummyBenchData {
-
-    val ITEMS: MutableList<Person> = ArrayList()
-    val ITEM_MAP: MutableMap<Long, Person> = HashMap()
-    val MONTHS = listOf("May", "June", "July", "August", "September", "October")
-
+class DummyBenchData : BenchData {
+    override var RAW: MutableList<Person> = mutableListOf()
+    override var SORT: BenchDataSort = BenchDataSort.AVAILABILITY
+    override var FILTER: BenchDataFilter = BenchDataFilter.ALL
     private val COUNT = Random().nextInt(30)
+    val MAP: MutableMap<Long, Person> = HashMap()
 
     init {
         for (i in 1..COUNT) {
             addItem(createFalsePerson())
         }
-        ITEMS.sortBy { it.availability }
+    }
+
+    override fun getSortedFilteredData(): List<Person> {
+        return RAW.sortedBy { it.availability }
     }
 
     private fun addItem(person: Person) {
-        ITEMS.add(person)
-        ITEM_MAP[person.id] = person
+        RAW.add(person)
+        MAP[person.id] = person
     }
 
     private fun createFalsePerson(): Person {
@@ -67,6 +69,7 @@ object DummyBenchData {
                 Random().nextInt(3) * 50.toFloat(),
                 Random().nextInt(3) * 50.toFloat()
         )
-        return Availability(points)
+        val months = listOf("May", "June", "July", "August", "September", "October")
+        return Availability(points, months)
     }
 }

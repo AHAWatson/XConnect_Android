@@ -2,6 +2,9 @@ package com.xpanxion.benchreport
 
 import android.content.Context
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
+import android.support.v4.app.DialogFragment
+import android.support.v4.app.FragmentManager
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -10,17 +13,20 @@ import android.view.View
 import android.view.ViewGroup
 import com.xpanxion.architecture.Person
 import com.xpanxion.architecture.TitledFragment
+import kotlinx.android.synthetic.main.fragment_layout.*
 
 class BenchFragment : TitledFragment() {
+    val benchData = DummyBenchData()
 
     init {
         title = "Bench Report"
     }
 
     private var columnCount = 1
-    private var listener: OnListFragmentInteractionListener? = null
+    private var listener: BenchFragmentManager? = null
 
     companion object {
+        val TAG = "BENCH_REPORT"
         const val ARG_COLUMN_COUNT = "column-count"
         @JvmStatic
         fun newInstance(columnCount: Int) =
@@ -40,24 +46,39 @@ class BenchFragment : TitledFragment() {
             savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_layout, container, false)
-        if (view is RecyclerView) {
-            with(view) {
+        val recyclerView = view.findViewById<RecyclerView>(R.id.bench_report_recycler_view)
+        if (recyclerView is RecyclerView) {
+            with(recyclerView) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = BenchItemRecyclerViewAdapter(DummyBenchData.ITEMS, listener)
+                adapter = BenchItemRecyclerViewAdapter(benchData, listener)
             }
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                    if (dy > 5) {
+                        fab.hide()
+                    } else if (dy < 0) {
+                        fab.show()
+                    }
+                }
+            }
+            )
+        }
+        view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+            val dialog = FilterDialogue()
+            dialog.show(fragmentManager as FragmentManager, "Filter")
         }
         return view
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnListFragmentInteractionListener) {
+        if (context is BenchFragmentManager) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
+            throw RuntimeException(context.toString() + " must implement BenchFragmentManager")
         }
     }
 
@@ -66,7 +87,7 @@ class BenchFragment : TitledFragment() {
         listener = null
     }
 
-    interface OnListFragmentInteractionListener {
+    interface BenchFragmentManager {
         fun onListFragmentInteraction(item: Person?)
     }
 }
