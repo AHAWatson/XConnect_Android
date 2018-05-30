@@ -1,19 +1,21 @@
-package com.xpanxion.benchreport.dummy
+package com.xpanxion.benchreport
 
 import com.xpanxion.architecture.*
 import java.util.*
 
-object DummyContent {
+object DummyBenchData {
 
     val ITEMS: MutableList<Person> = ArrayList()
     val ITEM_MAP: MutableMap<Long, Person> = HashMap()
+    val MONTHS = listOf("May", "June", "July", "August", "September", "October")
 
-    private val COUNT = 25
+    private val COUNT = Random().nextInt(30)
 
     init {
         for (i in 1..COUNT) {
             addItem(createFalsePerson())
         }
+        ITEMS.sortBy { it.availability }
     }
 
     private fun addItem(person: Person) {

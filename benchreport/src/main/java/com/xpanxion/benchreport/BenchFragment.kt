@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.xpanxion.architecture.Person
 import com.xpanxion.architecture.TitledFragment
-import com.xpanxion.benchreport.dummy.DummyContent
 
 class BenchFragment : TitledFragment() {
 
@@ -47,7 +46,7 @@ class BenchFragment : TitledFragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = BenchItemRecyclerViewAdapter(DummyContent.ITEMS, listener)
+                adapter = BenchItemRecyclerViewAdapter(DummyBenchData.ITEMS, listener)
             }
         }
         return view

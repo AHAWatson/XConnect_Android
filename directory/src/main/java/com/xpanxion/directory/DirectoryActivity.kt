@@ -2,7 +2,6 @@ package com.xpanxion.directory
 
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -11,9 +10,6 @@ import android.view.MenuItem
 import com.xpanxion.architecture.Person
 import com.xpanxion.architecture.TitledFragment
 import com.xpanxion.benchreport.BenchFragment
-import com.xpanxion.benchreport.dummy.DummyContent
-import com.xpanxion.directory.R.id.drawer_layout
-import com.xpanxion.directory.R.id.toolbar
 import kotlinx.android.synthetic.main.directory_layout.*
 
 class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, BenchFragment.OnListFragmentInteractionListener {

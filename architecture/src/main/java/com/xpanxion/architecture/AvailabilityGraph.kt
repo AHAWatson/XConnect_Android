@@ -13,6 +13,8 @@ class AvailabilityGraph(context: Context, attributes: AttributeSet) : View(conte
     private val paint = Paint()
     private var dst: Rect = Rect()
     private val fillPaint = Paint()
+    private val textPaint = Paint()
+    var months: List<String> = listOf()
     private val backgroundBitmap: Bitmap
     private val backgroundPaint = Paint()
     private var points = ArrayList<PointF>()
@@ -33,25 +35,25 @@ class AvailabilityGraph(context: Context, attributes: AttributeSet) : View(conte
         fillPaint.style = Paint.Style.FILL
         fillPaint.color = (CHART_COLOR and 0xFFFFFF or 0x10000000).toInt()
 
+        textPaint.style = Paint.Style.FILL
+        textPaint.color = Color.parseColor("#FFFFFF")
+        textPaint.strokeWidth = 12f
+        textPaint.textSize = 50f
+
         backgroundPaint.style = Paint.Style.FILL_AND_STROKE
         backgroundBitmap = Bitmap.createBitmap(6, 1, Bitmap.Config.ARGB_8888)
         val c = Canvas(backgroundBitmap)
 
         backgroundPaint.color = Color.parseColor("#E9E9E9")
         c.drawRect(0f, 0f, 1f, 1f, backgroundPaint)
-
         backgroundPaint.color = Color.parseColor("#D9D9D9")
         c.drawRect(1f, 0f, 2f, 1f, backgroundPaint)
-
         backgroundPaint.color = Color.parseColor("#E9E9E9")
         c.drawRect(2f, 0f, 3f, 1f, backgroundPaint)
-
         backgroundPaint.color = Color.parseColor("#D9D9D9")
         c.drawRect(3f, 0f, 4f, 1f, backgroundPaint)
-
         backgroundPaint.color = Color.parseColor("#E9E9E9")
         c.drawRect(4f, 0f, 5f, 1f, backgroundPaint)
-
         backgroundPaint.color = Color.parseColor("#D9D9D9")
         c.drawRect(5f, 0f, 6f, 1f, backgroundPaint)
     }
@@ -98,12 +100,28 @@ class AvailabilityGraph(context: Context, attributes: AttributeSet) : View(conte
                 )
             }
             canvas.drawBitmap(backgroundBitmap, null, dst, backgroundPaint)
+            drawMonthLabels(canvas)
             canvas.drawPath(path, paint)
 
-            path.lineTo(getScaledX(points[points.size-1].x, availability.size), height.toFloat())
+            path.lineTo(getScaledX(points[points.size - 1].x, availability.size), height.toFloat())
             path.lineTo(getScaledX(points[0].x, availability.size), height.toFloat())
             path.close()
             canvas.drawPath(path, fillPaint)
+        }
+    }
+
+    private fun drawMonthLabels(canvas: Canvas) {
+        if(months.isNotEmpty()) {
+            var rect = Rect()
+            var textX = (canvas.width / 24).toFloat()
+            var textY = (3 * canvas.height / 4).toFloat()
+            textPaint.getTextBounds("May", 0, "May".length, rect)
+            canvas.rotate(-90f, textX + rect.exactCenterX(), textY + rect.exactCenterY())
+            var increment = (canvas.width / 6).toFloat()
+            months.forEachIndexed { index, month ->
+                canvas.drawText(month, textX, textY + increment * index, textPaint)
+            }
+            canvas.rotate(90f, textX + rect.exactCenterX(), textY + rect.exactCenterY())
         }
     }
 

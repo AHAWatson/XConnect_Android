@@ -34,6 +34,7 @@ class BenchItemRecyclerViewAdapter(
         val person = values[position]
         holder.nameTextView.text = person.name.toString()
         holder.roleTextView.text = person.role.toString()
+        holder.availabilityGraph.months = DummyBenchData.MONTHS
         holder.availabilityGraph.availability = person.availability.rawData
         with(holder.view) {
             tag = person
