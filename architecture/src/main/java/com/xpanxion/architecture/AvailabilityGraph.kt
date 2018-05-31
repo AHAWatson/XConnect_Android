@@ -6,7 +6,6 @@ import android.util.AttributeSet
 import android.view.View
 
 private const val SMOOTHNESS = 0.05f
-private const val CHART_COLOR = 0xFF0099CC
 
 class AvailabilityGraph(context: Context, attributes: AttributeSet) : View(context, attributes) {
     private val path = Path()
@@ -27,16 +26,16 @@ class AvailabilityGraph(context: Context, attributes: AttributeSet) : View(conte
 
     init {
         paint.style = Paint.Style.STROKE
-        paint.color = 0xFF33B5E5.toInt()
+        paint.color = context.resources.getColor(R.color.colorAlternateAccent)
         paint.strokeWidth = 4F
         paint.isAntiAlias = true
         paint.setShadowLayer(4F, 2F, 2F, 0x80000000.toInt())
 
         fillPaint.style = Paint.Style.FILL
-        fillPaint.color = (CHART_COLOR and 0xFFFFFF or 0x10000000).toInt()
+        fillPaint.color = (context.resources.getColor(R.color.colorAlternateAccent) and 0xFFFFFF or 0x10000000).toInt()
 
         textPaint.style = Paint.Style.FILL
-        textPaint.color = Color.parseColor("#FFFFFF")
+        textPaint.color = context.resources.getColor(R.color.colorBackground)
         textPaint.strokeWidth = 12f
         textPaint.textSize = 50f
 
@@ -44,17 +43,13 @@ class AvailabilityGraph(context: Context, attributes: AttributeSet) : View(conte
         backgroundBitmap = Bitmap.createBitmap(6, 1, Bitmap.Config.ARGB_8888)
         val c = Canvas(backgroundBitmap)
 
-        backgroundPaint.color = Color.parseColor("#E9E9E9")
+        backgroundPaint.color = context.resources.getColor(R.color.colorLightGray)
         c.drawRect(0f, 0f, 1f, 1f, backgroundPaint)
-        backgroundPaint.color = Color.parseColor("#D9D9D9")
-        c.drawRect(1f, 0f, 2f, 1f, backgroundPaint)
-        backgroundPaint.color = Color.parseColor("#E9E9E9")
         c.drawRect(2f, 0f, 3f, 1f, backgroundPaint)
-        backgroundPaint.color = Color.parseColor("#D9D9D9")
-        c.drawRect(3f, 0f, 4f, 1f, backgroundPaint)
-        backgroundPaint.color = Color.parseColor("#E9E9E9")
         c.drawRect(4f, 0f, 5f, 1f, backgroundPaint)
-        backgroundPaint.color = Color.parseColor("#D9D9D9")
+        backgroundPaint.color = context.resources.getColor(R.color.colorMediumGray)
+        c.drawRect(1f, 0f, 2f, 1f, backgroundPaint)
+        c.drawRect(3f, 0f, 4f, 1f, backgroundPaint)
         c.drawRect(5f, 0f, 6f, 1f, backgroundPaint)
     }
 
@@ -111,17 +106,15 @@ class AvailabilityGraph(context: Context, attributes: AttributeSet) : View(conte
     }
 
     private fun drawMonthLabels(canvas: Canvas) {
-        if(months.isNotEmpty()) {
-            var rect = Rect()
-            var textX = (canvas.width / 24).toFloat()
-            var textY = (3 * canvas.height / 4).toFloat()
-            textPaint.getTextBounds("May", 0, "May".length, rect)
-            canvas.rotate(-90f, textX + rect.exactCenterX(), textY + rect.exactCenterY())
+        if (months.isNotEmpty()) {
+            var textX = (canvas.width / 8).toFloat()
+            var textY = (9 * canvas.height / 10).toFloat()
+            canvas.rotate(-90f, textX, textY)
             var increment = (canvas.width / 6).toFloat()
             months.forEachIndexed { index, month ->
                 canvas.drawText(month, textX, textY + increment * index, textPaint)
             }
-            canvas.rotate(90f, textX + rect.exactCenterX(), textY + rect.exactCenterY())
+            canvas.rotate(90f, textX, textY)
         }
     }
 

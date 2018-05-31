@@ -6,7 +6,6 @@ import java.util.*
 class DummyBenchData : BenchData {
     override var RAW: MutableList<Person> = mutableListOf()
     override var SORT: BenchDataSort = BenchDataSort.AVAILABILITY
-    override var FILTER: BenchDataFilter = BenchDataFilter.ALL
     private val COUNT = Random().nextInt(30)
     val MAP: MutableMap<Long, Person> = HashMap()
 
@@ -16,8 +15,15 @@ class DummyBenchData : BenchData {
         }
     }
 
-    override fun getSortedFilteredData(): List<Person> {
-        return RAW.sortedBy { it.availability }
+    override fun getSortedData(): List<Person> {
+        return when(SORT){
+            BenchDataSort.AVAILABILITY -> {
+                RAW.sortedBy { it.availability }
+            }
+            BenchDataSort.ROLE -> {
+                RAW.sortedBy { it.role.title }
+            }
+        }
     }
 
     private fun addItem(person: Person) {

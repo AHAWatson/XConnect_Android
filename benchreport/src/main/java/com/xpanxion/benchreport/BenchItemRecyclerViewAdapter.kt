@@ -13,7 +13,7 @@ class BenchItemRecyclerViewAdapter(
         benchData: BenchData,
         private val listener: BenchFragment.BenchFragmentManager?
 ) : RecyclerView.Adapter<BenchItemRecyclerViewAdapter.PersonViewHolder>() {
-    private val values: List<Person> = benchData.getSortedFilteredData()
+    private val values: List<Person> = benchData.getSortedData()
     private val mOnClickListener: View.OnClickListener
 
     init {

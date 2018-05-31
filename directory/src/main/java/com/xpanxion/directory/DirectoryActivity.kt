@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import com.xpanxion.architecture.Person
 import com.xpanxion.architecture.TitledFragment
 import com.xpanxion.benchreport.BenchFragment
@@ -23,6 +22,7 @@ class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_container, fragment, BenchFragment.TAG)
         transaction.commit()
+        toolbar.title = fragment.title
         setSupportActionBar(toolbar)
 
         val toggle = ActionBarDrawerToggle(
