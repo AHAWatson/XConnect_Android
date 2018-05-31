@@ -1,10 +1,11 @@
 package com.xpanxion.benchreport
 
+import com.xpanxion.architecture.BenchItem
 import com.xpanxion.architecture.Person
 
 interface BenchData{
-    var RAW: MutableList<Person>
-    var SORT: BenchDataSort
+    var raw: MutableList<Person>
+    var sort: BenchDataSort
 
-    fun getSortedData(): List<Person>
+    fun getSortedData(): List<BenchItem>
 }

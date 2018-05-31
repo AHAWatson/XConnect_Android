@@ -7,7 +7,9 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.xpanxion.architecture.BenchItem
 import com.xpanxion.architecture.Person
+import com.xpanxion.architecture.RoleItem
 import com.xpanxion.architecture.TitledFragment
 import com.xpanxion.benchreport.BenchFragment
 import kotlinx.android.synthetic.main.directory_layout.*
@@ -67,6 +69,12 @@ class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         return true
     }
 
-    override fun onListFragmentInteraction(item: Person?) {
+    override fun onListFragmentInteraction(item: BenchItem?) {
+        when (item) {
+            is Person -> {
+            }
+            is RoleItem -> {
+            }
+        }
     }
 }

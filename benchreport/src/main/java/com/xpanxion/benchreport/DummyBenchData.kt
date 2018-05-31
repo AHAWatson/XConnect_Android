@@ -4,30 +4,72 @@ import com.xpanxion.architecture.*
 import java.util.*
 
 class DummyBenchData : BenchData {
-    override var RAW: MutableList<Person> = mutableListOf()
-    override var SORT: BenchDataSort = BenchDataSort.AVAILABILITY
+    override var raw: MutableList<Person> = mutableListOf()
+        set(value) {
+        field = value
+            updateMap()
+            updateRoles()
+        }
+    override var sort: BenchDataSort = BenchDataSort.AVAILABILITY
     private val COUNT = Random().nextInt(30)
     val MAP: MutableMap<Long, Person> = HashMap()
+    var roleItems: MutableList<RoleItem> = mutableListOf()
 
     init {
-        for (i in 1..COUNT) {
-            addItem(createFalsePerson())
+        raw = buildFalseData()
+    }
+
+    private fun updateMap(){
+        for(person in raw){
+            MAP[person.id] = person
         }
     }
 
-    override fun getSortedData(): List<Person> {
-        return when(SORT){
+    private fun updateRoles(){
+        for(person in raw){
+            roleItems.filter{it.role.sameTitle(person.role)}.let { result ->
+                if(result.isEmpty()){
+                    roleItems.add(RoleItem(person))
+                } else{
+                    result[0].persons.add(person)
+                }
+            }
+        }
+        val sortedRoles = roleItems.sortedBy { it.availability.rawData.max() }
+        if(!sortedRoles.isEmpty()) {
+            val maximum = sortedRoles[0].availability.rawData.max()
+            maximum?.let {
+                for (roleItem in roleItems) {
+                    roleItem.graph_maximum = maximum
+                }
+            }
+        }
+    }
+
+    private fun buildFalseData(): MutableList<Person> {
+        val result = mutableListOf<Person>()
+        for (i in 1..COUNT) {
+            val falsePerson = createFalsePerson()
+            result.add(falsePerson)
+            MAP[falsePerson.id] = falsePerson
+            addItem(createFalsePerson())
+        }
+        return result
+    }
+
+    override fun getSortedData(): List<BenchItem> {
+        return when (sort) {
             BenchDataSort.AVAILABILITY -> {
-                RAW.sortedBy { it.availability }
+                raw.sortedBy { it.availability }
             }
             BenchDataSort.ROLE -> {
-                RAW.sortedBy { it.role.title }
+                roleItems
             }
         }
     }
 
     private fun addItem(person: Person) {
-        RAW.add(person)
+        raw.add(person)
         MAP[person.id] = person
     }
 

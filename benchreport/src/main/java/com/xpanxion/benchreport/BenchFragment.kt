@@ -3,13 +3,13 @@ package com.xpanxion.benchreport
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.FragmentManager
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.xpanxion.architecture.BenchItem
 import com.xpanxion.architecture.Person
 import com.xpanxion.architecture.TitledFragment
 import kotlinx.android.synthetic.main.fragment_layout.*
@@ -18,7 +18,7 @@ class BenchFragment : TitledFragment(), SortableBenchData {
     val benchData = DummyBenchData()
 
     init {
-        title = "Bench Report"
+        title = context?.resources?.getString(R.string.title)
     }
 
     private var columnCount = 1
@@ -68,7 +68,7 @@ class BenchFragment : TitledFragment(), SortableBenchData {
         view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             val dialog = SortDialogue()
             val args = Bundle()
-            args.putString(SORT_KEY, benchData.SORT.label)
+            args.putString(SORT_KEY, benchData.sort.label)
             dialog.arguments = args
             dialog.show(childFragmentManager, "sort_fragment")
         }
@@ -77,7 +77,7 @@ class BenchFragment : TitledFragment(), SortableBenchData {
 
     override fun sortBy(sort: BenchDataSort?) {
         sort?.let {
-            benchData.SORT = sort
+            benchData.sort = sort
             bench_report_recycler_view.adapter = BenchItemRecyclerViewAdapter(benchData, listener)
         }
     }
@@ -97,6 +97,6 @@ class BenchFragment : TitledFragment(), SortableBenchData {
     }
 
     interface BenchFragmentManager {
-        fun onListFragmentInteraction(item: Person?)
+        fun onListFragmentInteraction(item: BenchItem?)
     }
 }

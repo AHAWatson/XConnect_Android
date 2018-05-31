@@ -4,52 +4,47 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.xpanxion.architecture.AvailabilityGraph
-import com.xpanxion.architecture.Person
-import kotlinx.android.synthetic.main.person_list_item.view.*
+import com.xpanxion.architecture.BenchItem
+import kotlinx.android.synthetic.main.bench_list_item.view.*
 
 class BenchItemRecyclerViewAdapter(
         benchData: BenchData,
         private val listener: BenchFragment.BenchFragmentManager?
 ) : RecyclerView.Adapter<BenchItemRecyclerViewAdapter.PersonViewHolder>() {
-    private val values: List<Person> = benchData.getSortedData()
-    private val mOnClickListener: View.OnClickListener
+    private val values: List<BenchItem> = benchData.getSortedData()
+    private val onClickListener: View.OnClickListener
 
     init {
-        mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as Person
+        onClickListener = View.OnClickListener { v ->
+            val item = v.tag as BenchItem
             listener?.onListFragmentInteraction(item)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.person_list_item, parent, false)
+                .inflate(R.layout.bench_list_item, parent, false)
         return PersonViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: PersonViewHolder, position: Int) {
-        val person = values[position]
-        holder.nameTextView.text = person.name.toString()
-        holder.roleTextView.text = person.role.toString()
-        holder.availabilityGraph.months = person.availability.months
-        holder.availabilityGraph.availability = person.availability.rawData
+        val benchItem = values[position]
+        holder.tagLayout.removeAllViews()
+        holder.tagLayout.addView(benchItem.getTagView(holder.view.context))
+        holder.availabilityGraph.months = benchItem.availability.months
+        holder.availabilityGraph.maximum = benchItem.getGraphMaximum()
+        holder.availabilityGraph.availability = benchItem.availability.rawData
         with(holder.view) {
-            tag = person
-            setOnClickListener(mOnClickListener)
+            tag = benchItem
+            setOnClickListener(onClickListener)
         }
     }
 
     override fun getItemCount(): Int = values.size
 
     inner class PersonViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val nameTextView: TextView = view.person_name
-        val roleTextView: TextView = view.person_role
+        val tagLayout: ViewGroup = view.tag_layout
         val availabilityGraph: AvailabilityGraph = view.availability_graph
-
-        override fun toString(): String {
-            return super.toString() + " '" + nameTextView.text + "'"
-        }
     }
 }

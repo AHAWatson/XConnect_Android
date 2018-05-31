@@ -4,6 +4,14 @@ sealed class Role(val title: String, val degree: Int) {
     override fun toString(): String{
         return "$title ${degree.toRomanNumeral()}"
     }
+
+    fun sameTitle(other: Role): Boolean{
+        return title == other.title
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return other is Role && other.title == title && other.degree == degree
+    }
 }
 
 class Qa(level: Int) : Role("QA", level)

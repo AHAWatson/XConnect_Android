@@ -8,6 +8,7 @@ import android.view.View
 private const val SMOOTHNESS = 0.05f
 
 class AvailabilityGraph(context: Context, attributes: AttributeSet) : View(context, attributes) {
+    var maximum = 100f
     private val path = Path()
     private val paint = Paint()
     private var dst: Rect = Rect()
@@ -69,7 +70,7 @@ class AvailabilityGraph(context: Context, attributes: AttributeSet) : View(conte
             path.reset()
             var lX = 0f
             var lY = 0f
-            path.moveTo(getScaledX(points[0].x, availability.size), getScaledY(points[0].y, 100f))
+            path.moveTo(getScaledX(points[0].x, availability.size), getScaledY(points[0].y, maximum))
             for (i in 1 until points.size) {
                 val p = points[i]
 
@@ -87,11 +88,11 @@ class AvailabilityGraph(context: Context, attributes: AttributeSet) : View(conte
 
                 path.cubicTo(
                         getScaledX(x1, availability.size),
-                        getScaledY(y1, 100f),
+                        getScaledY(y1, maximum),
                         getScaledX(x2, availability.size),
-                        getScaledY(y2, 100f),
+                        getScaledY(y2, maximum),
                         getScaledX(p.x, availability.size),
-                        getScaledY(p.y, 100f)
+                        getScaledY(p.y, maximum)
                 )
             }
             canvas.drawBitmap(backgroundBitmap, null, dst, backgroundPaint)
