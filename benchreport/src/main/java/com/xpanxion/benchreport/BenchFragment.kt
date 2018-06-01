@@ -10,19 +10,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.xpanxion.architecture.BenchItem
-import com.xpanxion.architecture.Person
 import com.xpanxion.architecture.TitledFragment
+import com.xpanxion.architecture.TitledFragmentManager
 import kotlinx.android.synthetic.main.fragment_layout.*
 
 class BenchFragment : TitledFragment(), SortableBenchData {
     val benchData = DummyBenchData()
 
     init {
-        title = context?.resources?.getString(R.string.title)
+        title = "Availability"
     }
 
     private var columnCount = 1
-    private var listener: BenchFragmentManager? = null
+    private var benchFragmentManager: BenchFragmentManager? = null
 
     companion object {
         val TAG = "BENCH_REPORT"
@@ -52,7 +52,7 @@ class BenchFragment : TitledFragment(), SortableBenchData {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = BenchItemRecyclerViewAdapter(benchData, listener)
+                adapter = BenchItemRecyclerViewAdapter(benchData, benchFragmentManager)
             }
             recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
@@ -78,14 +78,14 @@ class BenchFragment : TitledFragment(), SortableBenchData {
     override fun sortBy(sort: BenchDataSort?) {
         sort?.let {
             benchData.sort = sort
-            bench_report_recycler_view.adapter = BenchItemRecyclerViewAdapter(benchData, listener)
+            bench_report_recycler_view.adapter = BenchItemRecyclerViewAdapter(benchData, benchFragmentManager)
         }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is BenchFragmentManager) {
-            listener = context
+            benchFragmentManager = context
         } else {
             throw RuntimeException(context.toString() + " must implement BenchFragmentManager")
         }
@@ -93,7 +93,7 @@ class BenchFragment : TitledFragment(), SortableBenchData {
 
     override fun onDetach() {
         super.onDetach()
-        listener = null
+        benchFragmentManager = null
     }
 
     interface BenchFragmentManager {

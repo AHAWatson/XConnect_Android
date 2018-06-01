@@ -7,26 +7,17 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.xpanxion.architecture.BenchItem
-import com.xpanxion.architecture.Person
-import com.xpanxion.architecture.RoleItem
-import com.xpanxion.architecture.TitledFragment
+import com.xpanxion.architecture.*
 import com.xpanxion.benchreport.BenchFragment
+import com.xpanxion.profile.ProfileFragment
 import kotlinx.android.synthetic.main.directory_layout.*
 
-class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, BenchFragment.BenchFragmentManager {
+class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, BenchFragment.BenchFragmentManager, TitledFragmentManager {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.directory_layout)
-
-        val fragment = BenchFragment()
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment, BenchFragment.TAG)
-        transaction.commit()
-        toolbar.title = fragment.title
         setSupportActionBar(toolbar)
-
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
@@ -34,9 +25,19 @@ class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         nav_view.setNavigationItemSelectedListener(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        val fragment = BenchFragment()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment, BenchFragment.TAG)
+                .commit()
+    }
+
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
+        } else {
+            supportFragmentManager.popBackStack()
         }
     }
 
@@ -60,10 +61,9 @@ class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             }
         }
         fragment?.let { frag ->
-            toolbar.title = fragment.title
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, frag)
-            transaction.commit()
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, frag, BenchFragment.TAG)
+                    .commit()
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
@@ -72,9 +72,20 @@ class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onListFragmentInteraction(item: BenchItem?) {
         when (item) {
             is Person -> {
+                val fragment = ProfileFragment()
+                fragment?.let { frag ->
+                    supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, frag)
+                            .addToBackStack(null)
+                            .commit()
+                }
             }
             is RoleItem -> {
             }
         }
+    }
+
+    override fun onTitleUpdated(title: String?) {
+        toolbar.title = title
     }
 }

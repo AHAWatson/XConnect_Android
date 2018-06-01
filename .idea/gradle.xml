@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/benchreport" />
             <option value="$PROJECT_DIR$/branding" />
             <option value="$PROJECT_DIR$/directory" />
+            <option value="$PROJECT_DIR$/profile" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
