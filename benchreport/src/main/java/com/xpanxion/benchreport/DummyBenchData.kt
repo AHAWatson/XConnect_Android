@@ -37,7 +37,7 @@ class DummyBenchData : BenchData {
         }
         val sortedRoles = roleItems.sortedBy { it.availability.rawData.max() }
         if(!sortedRoles.isEmpty()) {
-            val maximum = sortedRoles[0].availability.rawData.max()
+            val maximum = sortedRoles[sortedRoles.lastIndex].availability.rawData.max()
             maximum?.let {
                 for (roleItem in roleItems) {
                     roleItem.graph_maximum = maximum
@@ -109,7 +109,7 @@ class DummyBenchData : BenchData {
     }
 
     private fun createFalseAvailability(): Availability {
-        val points = listOf(
+        val points = arrayOf(
                 Random().nextInt(3) * 50.toFloat(),
                 Random().nextInt(3) * 50.toFloat(),
                 Random().nextInt(3) * 50.toFloat(),

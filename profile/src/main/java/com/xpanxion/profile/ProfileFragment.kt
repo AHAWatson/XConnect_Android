@@ -4,15 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import com.xpanxion.architecture.AvailabilityGraph
 import com.xpanxion.architecture.Person
 
 import com.xpanxion.architecture.TitledFragment
 
+private const val NAME_KEY = "NAME_KEY"
+private const val ROLE_KEY = "ROLE_KEY"
+private const val LOCATION_KEY = "LOCATION_KEY"
+private const val AVAILABILITY_KEY = "AVAILABILITY_KEY"
+private const val LOCATION_IMAGE_KEY = "LOCATION_IMAGE_KEY"
+
 class ProfileFragment : TitledFragment() {
-
-    private var mParam1: String? = null
-    private var mParam2: String? = null
-
     init {
         title = "Profile"
     }
@@ -23,6 +28,23 @@ class ProfileFragment : TitledFragment() {
             savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
+        view.findViewById<TextView>(R.id.person_profile_name).text =
+                arguments?.getString(NAME_KEY)
+        view.findViewById<TextView>(R.id.person_profile_role).text =
+                arguments?.getString(ROLE_KEY)
+        view.findViewById<TextView>(R.id.person_profile_location).text =
+                arguments?.getString(LOCATION_KEY)
+        arguments?.getInt(LOCATION_IMAGE_KEY)?.let{ image ->
+            view.findViewById<ImageView>(R.id.profile_location_image_view)
+                    .setImageDrawable(resources.getDrawable(image))
+        }
+        view.findViewById<AvailabilityGraph>(R.id.profile_availability_graph).let{graph ->
+            graph.maximum = 100f
+            graph.months = listOf("May", "June", "July", "August", "September", "October")
+            arguments?.getFloatArray(AVAILABILITY_KEY)?.toTypedArray()?.let{data ->
+                graph.availability = data
+            }
+        }
         return view
     }
 
@@ -31,6 +53,11 @@ class ProfileFragment : TitledFragment() {
         fun newInstance(person: Person): ProfileFragment {
             val fragment = ProfileFragment()
             val args = Bundle()
+            args.putString(NAME_KEY, person.name.toString())
+            args.putString(ROLE_KEY, person.role.toString())
+            args.putString(LOCATION_KEY, person.location.toString())
+            args.putInt(LOCATION_IMAGE_KEY, person.location.icon)
+            args.putFloatArray(AVAILABILITY_KEY, person.availability.rawData.toFloatArray())
             fragment.arguments = args
             return fragment
         }

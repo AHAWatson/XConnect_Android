@@ -72,13 +72,10 @@ class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onListFragmentInteraction(item: BenchItem?) {
         when (item) {
             is Person -> {
-                val fragment = ProfileFragment()
-                fragment?.let { frag ->
-                    supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, frag)
-                            .addToBackStack(null)
-                            .commit()
-                }
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, ProfileFragment.newInstance(item))
+                        .addToBackStack(null)
+                        .commit()
             }
             is RoleItem -> {
             }

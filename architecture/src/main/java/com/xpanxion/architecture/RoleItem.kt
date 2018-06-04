@@ -18,7 +18,7 @@ class RoleItem(
 
     override fun getTagView(context: Context): View {
         val view = LayoutInflater.from(context).inflate(R.layout.role_tag_layout, null)
-        view.findViewById<TextView>(R.id.role_label).text = role.title
+        view.findViewById<TextView>(R.id.role_label).text = role.short_title
         view.findViewById<TextView>(R.id.role_count).text = "(${persons.size})"
         return view
     }

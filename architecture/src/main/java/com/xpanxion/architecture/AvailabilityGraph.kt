@@ -18,7 +18,7 @@ class AvailabilityGraph(context: Context, attributes: AttributeSet) : View(conte
     private val backgroundBitmap: Bitmap
     private val backgroundPaint = Paint()
     private var points = ArrayList<PointF>()
-    var availability: List<Float> = listOf()
+    var availability: Array<Float> = arrayOf()
         set(value) {
             field = value
             updatePoints()

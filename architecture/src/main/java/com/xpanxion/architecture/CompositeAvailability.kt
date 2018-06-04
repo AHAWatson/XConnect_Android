@@ -1,7 +1,7 @@
 package com.xpanxion.architecture
 
-private fun compileRawData(persons: List<Person>): List<Float> {
-    val result = arrayListOf(0f,0f,0f,0f,0f,0f)
+private fun compileRawData(persons: List<Person>): Array<Float> {
+    val result = arrayOf(0f,0f,0f,0f,0f,0f)
     for (person in persons) {
         person.availability.rawData.forEachIndexed { index, value ->
             result[index] += (value / 100f)

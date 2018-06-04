@@ -15,7 +15,7 @@ class Person(
     override fun getTagView(context: Context): View {
         val view = LayoutInflater.from(context).inflate(R.layout.person_tag_layout, null)
         view.findViewById<TextView>(R.id.person_name).text = name.toString()
-        view.findViewById<TextView>(R.id.person_role).text = role.toString()
+        view.findViewById<TextView>(R.id.person_role).text = "${role.short_title} (${role.degree.toRomanNumeral()})"
         return view
     }
 
