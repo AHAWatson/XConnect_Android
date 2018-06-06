@@ -1,6 +1,9 @@
 package com.xpanxion.profile
 
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,11 +11,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.xpanxion.architecture.AvailabilityGraph
 import com.xpanxion.architecture.Person
+import com.xpanxion.architecture.Skill
 
 import com.xpanxion.architecture.TitledFragment
 
 private const val NAME_KEY = "NAME_KEY"
 private const val ROLE_KEY = "ROLE_KEY"
+private const val SKILLS_KEY = "SKILLS_KEY"
 private const val LOCATION_KEY = "LOCATION_KEY"
 private const val AVAILABILITY_KEY = "AVAILABILITY_KEY"
 private const val LOCATION_IMAGE_KEY = "LOCATION_IMAGE_KEY"
@@ -34,16 +39,21 @@ class ProfileFragment : TitledFragment() {
                 arguments?.getString(ROLE_KEY)
         view.findViewById<TextView>(R.id.person_profile_location).text =
                 arguments?.getString(LOCATION_KEY)
-        arguments?.getInt(LOCATION_IMAGE_KEY)?.let{ image ->
+        arguments?.getInt(LOCATION_IMAGE_KEY)?.let { image ->
             view.findViewById<ImageView>(R.id.profile_location_image_view)
                     .setImageDrawable(resources.getDrawable(image))
         }
-        view.findViewById<AvailabilityGraph>(R.id.profile_availability_graph).let{graph ->
+        view.findViewById<AvailabilityGraph>(R.id.profile_availability_graph).let { graph ->
             graph.maximum = 100f
             graph.months = listOf("May", "June", "July", "August", "September", "October")
-            arguments?.getFloatArray(AVAILABILITY_KEY)?.toTypedArray()?.let{data ->
+            arguments?.getFloatArray(AVAILABILITY_KEY)?.toTypedArray()?.let { data ->
                 graph.availability = data
             }
+        }
+        val recyclerView = view.findViewById<RecyclerView>(R.id.profile_skills_recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        arguments?.getParcelableArray(SKILLS_KEY).let { skills ->
+            recyclerView.adapter = SkillItemRecyclerViewAdapter(skills as Array<Skill>)
         }
         return view
     }
@@ -55,8 +65,9 @@ class ProfileFragment : TitledFragment() {
             val args = Bundle()
             args.putString(NAME_KEY, person.name.toString())
             args.putString(ROLE_KEY, person.role.toString())
-            args.putString(LOCATION_KEY, person.location.toString())
             args.putInt(LOCATION_IMAGE_KEY, person.location.icon)
+            args.putString(LOCATION_KEY, person.location.toString())
+            args.putParcelableArray(SKILLS_KEY, person.skills)
             args.putFloatArray(AVAILABILITY_KEY, person.availability.rawData.toFloatArray())
             fragment.arguments = args
             return fragment

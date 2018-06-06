@@ -10,8 +10,9 @@ class Person(
         val role: Role,
         val name: Name,
         val location: Location,
+        val skills: Array<Skill>,
         availability: Availability
-): BenchItem(availability) {
+) : BenchItem(availability) {
     override fun getTagView(context: Context): View {
         val view = LayoutInflater.from(context).inflate(R.layout.person_tag_layout, null)
         view.findViewById<TextView>(R.id.person_name).text = name.toString()

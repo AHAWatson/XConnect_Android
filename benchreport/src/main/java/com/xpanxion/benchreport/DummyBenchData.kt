@@ -6,7 +6,7 @@ import java.util.*
 class DummyBenchData : BenchData {
     override var raw: MutableList<Person> = mutableListOf()
         set(value) {
-        field = value
+            field = value
             updateMap()
             updateRoles()
         }
@@ -19,24 +19,24 @@ class DummyBenchData : BenchData {
         raw = buildFalseData()
     }
 
-    private fun updateMap(){
-        for(person in raw){
+    private fun updateMap() {
+        for (person in raw) {
             MAP[person.id] = person
         }
     }
 
-    private fun updateRoles(){
-        for(person in raw){
-            roleItems.filter{it.role.sameTitle(person.role)}.let { result ->
-                if(result.isEmpty()){
+    private fun updateRoles() {
+        for (person in raw) {
+            roleItems.filter { it.role.sameTitle(person.role) }.let { result ->
+                if (result.isEmpty()) {
                     roleItems.add(RoleItem(person))
-                } else{
+                } else {
                     result[0].persons.add(person)
                 }
             }
         }
         val sortedRoles = roleItems.sortedBy { it.availability.rawData.max() }
-        if(!sortedRoles.isEmpty()) {
+        if (!sortedRoles.isEmpty()) {
             val maximum = sortedRoles[sortedRoles.lastIndex].availability.rawData.max()
             maximum?.let {
                 for (roleItem in roleItems) {
@@ -79,7 +79,16 @@ class DummyBenchData : BenchData {
                 createFalseRole(),
                 createFalseName(),
                 createFalseLocation(),
+                createFalseSkills(),
                 createFalseAvailability()
+        )
+    }
+
+    private fun createFalseSkills(): Array<Skill> {
+        val number = 3 + Random().nextInt(3)
+        return Array(number, { i ->
+            Skill.subClassInstances.shuffled()[0]
+        }
         )
     }
 
