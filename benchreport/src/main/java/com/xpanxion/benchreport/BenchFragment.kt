@@ -11,11 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.xpanxion.architecture.BenchItem
 import com.xpanxion.architecture.TitledFragment
-import com.xpanxion.architecture.TitledFragmentManager
 import kotlinx.android.synthetic.main.fragment_layout.*
 
 class BenchFragment : TitledFragment(), SortableBenchData {
-    val benchData = DummyBenchData()
+    private val benchData = DummyBenchData()
 
     init {
         title = "Availability"

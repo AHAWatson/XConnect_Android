@@ -1,7 +1,6 @@
 package com.xpanxion.profile
 
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,22 +8,40 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.xpanxion.architecture.AvailabilityGraph
-import com.xpanxion.architecture.Person
-import com.xpanxion.architecture.Skill
+import com.xpanxion.architecture.*
 
-import com.xpanxion.architecture.TitledFragment
-
+private const val ID_KEY = "ID_KEY"
 private const val NAME_KEY = "NAME_KEY"
 private const val ROLE_KEY = "ROLE_KEY"
 private const val SKILLS_KEY = "SKILLS_KEY"
+private const val STARRED_KEY = "STARRED_KEY"
 private const val LOCATION_KEY = "LOCATION_KEY"
 private const val AVAILABILITY_KEY = "AVAILABILITY_KEY"
 private const val LOCATION_IMAGE_KEY = "LOCATION_IMAGE_KEY"
 
 class ProfileFragment : TitledFragment() {
+    private var id: Long?
+
     init {
         title = "Profile"
+        id = arguments?.getLong(ID_KEY)
+    }
+
+    companion object {
+        fun newInstance(person: Person): ProfileFragment {
+            val fragment = ProfileFragment()
+            val args = Bundle()
+            args.putLong(ID_KEY, person.id)
+            args.putBoolean(STARRED_KEY, person.starred)
+            args.putString(NAME_KEY, person.name.toString())
+            args.putString(ROLE_KEY, person.role.toString())
+            args.putParcelableArray(SKILLS_KEY, person.skills)
+            args.putInt(LOCATION_IMAGE_KEY, person.location.icon)
+            args.putString(LOCATION_KEY, person.location.toString())
+            args.putFloatArray(AVAILABILITY_KEY, person.availability.rawData.toFloatArray())
+            fragment.arguments = args
+            return fragment
+        }
     }
 
     override fun onCreateView(
@@ -56,21 +73,5 @@ class ProfileFragment : TitledFragment() {
             recyclerView.adapter = SkillItemRecyclerViewAdapter(skills as Array<Skill>)
         }
         return view
-    }
-
-    companion object {
-
-        fun newInstance(person: Person): ProfileFragment {
-            val fragment = ProfileFragment()
-            val args = Bundle()
-            args.putString(NAME_KEY, person.name.toString())
-            args.putString(ROLE_KEY, person.role.toString())
-            args.putInt(LOCATION_IMAGE_KEY, person.location.icon)
-            args.putString(LOCATION_KEY, person.location.toString())
-            args.putParcelableArray(SKILLS_KEY, person.skills)
-            args.putFloatArray(AVAILABILITY_KEY, person.availability.rawData.toFloatArray())
-            fragment.arguments = args
-            return fragment
-        }
     }
 }
