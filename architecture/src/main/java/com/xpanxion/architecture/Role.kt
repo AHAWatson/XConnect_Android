@@ -1,11 +1,11 @@
 package com.xpanxion.architecture
 
-sealed class Role(val short_title: String, val long_title: String, val degree: Int) {
-    override fun toString(): String{
+sealed class Role(val sort: BenchDataSort, val short_title: String, val long_title: String, val degree: Int) {
+    override fun toString(): String {
         return "$long_title ${degree.toRomanNumeral()}"
     }
 
-    fun sameTitle(other: Role): Boolean{
+    fun sameTitle(other: Role): Boolean {
         return long_title == other.long_title
     }
 
@@ -14,8 +14,8 @@ sealed class Role(val short_title: String, val long_title: String, val degree: I
     }
 }
 
-class Qa(level: Int) : Role("QA", "Quality Assurance", level)
-class Sdet(level: Int) : Role("SDET", "SDET", level)
-class DevOps(level: Int) : Role("DevOps", "DevOps", level)
-class Developer(level: Int) : Role("Dev", "Developer", level)
-class FunctionalAnalyst(level: Int) : Role("FA","Functional Analyst", level)
+class Qa(level: Int) : Role(BenchDataSort.QA, "QA", "Quality Assurance", level)
+class Sdet(level: Int) : Role(BenchDataSort.SDET, "SDET", "SDET", level)
+class DevOps(level: Int) : Role(BenchDataSort.DEVOPS, "DevOps", "DevOps", level)
+class Developer(level: Int) : Role(BenchDataSort.DEV, "Dev", "Developer", level)
+class FunctionalAnalyst(level: Int) : Role(BenchDataSort.FA, "FA", "Functional Analyst", level)

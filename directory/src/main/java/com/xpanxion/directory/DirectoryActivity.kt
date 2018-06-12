@@ -12,7 +12,8 @@ import com.xpanxion.benchreport.BenchFragment
 import com.xpanxion.profile.ProfileFragment
 import kotlinx.android.synthetic.main.directory_layout.*
 
-class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, BenchFragment.BenchFragmentManager, TitledFragmentManager {
+class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, BenchFragment.BenchFragmentManager, TitledFragmentManager, TitledBackHandlerFragment.BackHandler {
+    override var activeFragment: TitledBackHandlerFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +38,15 @@ class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
-            supportFragmentManager.popBackStack()
+            if (activeFragment == null) {
+                supportFragmentManager.popBackStack()
+            } else {
+                activeFragment?.let {
+                    if (!it.onBackPressed()) {
+                        supportFragmentManager.popBackStack()
+                    }
+                }
+            }
         }
     }
 
@@ -54,7 +63,7 @@ class DirectoryActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        var fragment: TitledFragment? = null
+        var fragment: TitledBackHandlerFragment? = null
         when (item.itemId) {
             R.id.nav_bench_report -> {
                 fragment = BenchFragment()

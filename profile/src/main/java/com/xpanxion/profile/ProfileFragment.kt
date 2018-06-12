@@ -19,7 +19,8 @@ private const val LOCATION_KEY = "LOCATION_KEY"
 private const val AVAILABILITY_KEY = "AVAILABILITY_KEY"
 private const val LOCATION_IMAGE_KEY = "LOCATION_IMAGE_KEY"
 
-class ProfileFragment : TitledFragment() {
+class ProfileFragment : TitledBackHandlerFragment() {
+
     private var id: Long?
 
     init {
@@ -74,4 +75,6 @@ class ProfileFragment : TitledFragment() {
         }
         return view
     }
+
+    override fun onBackPressed() = false
 }

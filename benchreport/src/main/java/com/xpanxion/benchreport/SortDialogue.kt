@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import com.xpanxion.architecture.BenchDataSort
 
 const val SORT_KEY = "SORT_KEY"
 
@@ -12,9 +13,9 @@ class SortDialogue : DialogFragment() {
         if (parentFragment is SortableBenchData) {
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("Sort By:")
-            val labels = Array(BenchDataSort.values().size) { "" }
+            val labels = Array(2) { "" }
             val map = HashMap<String, BenchDataSort>()
-            BenchDataSort.values().forEachIndexed { index, sort ->
+            arrayOf(BenchDataSort.ALL, BenchDataSort.ROLE).forEachIndexed { index, sort ->
                 labels[index] = sort.label
                 map[sort.label] = sort
             }

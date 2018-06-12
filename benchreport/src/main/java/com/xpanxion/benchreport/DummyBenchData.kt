@@ -1,6 +1,7 @@
 package com.xpanxion.benchreport
 
 import com.xpanxion.architecture.*
+import com.xpanxion.architecture.BenchDataSort.*
 import java.util.*
 
 class DummyBenchData : BenchData {
@@ -10,7 +11,7 @@ class DummyBenchData : BenchData {
             updateMap()
             updateRoles()
         }
-    override var sort: BenchDataSort = BenchDataSort.AVAILABILITY
+    override var sort: BenchDataSort = ALL
     private val COUNT = Random().nextInt(30)
     val MAP: MutableMap<Long, Person> = HashMap()
     var roleItems: MutableList<RoleItem> = mutableListOf()
@@ -59,11 +60,14 @@ class DummyBenchData : BenchData {
 
     override fun getSortedData(): List<BenchItem> {
         return when (sort) {
-            BenchDataSort.AVAILABILITY -> {
+            ALL -> {
                 raw.sortedBy { it.availability }
             }
-            BenchDataSort.ROLE -> {
+            ROLE -> {
                 roleItems
+            }
+            else -> {
+                raw.filter { it.role.sort == sort }.sortedBy { it.availability }
             }
         }
     }

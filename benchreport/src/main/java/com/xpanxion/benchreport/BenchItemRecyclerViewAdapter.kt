@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.xpanxion.architecture.AvailabilityGraph
 import com.xpanxion.architecture.BenchItem
+import com.xpanxion.architecture.Person
+import com.xpanxion.architecture.RoleItem
 import kotlinx.android.synthetic.main.bench_list_item.view.*
 
 class BenchItemRecyclerViewAdapter(
         benchData: BenchData,
+        private val sortable: SortableBenchData,
         private val listener: BenchFragment.BenchFragmentManager?
 ) : RecyclerView.Adapter<BenchItemRecyclerViewAdapter.PersonViewHolder>() {
     private val values: List<BenchItem> = benchData.getSortedData()
@@ -37,7 +40,14 @@ class BenchItemRecyclerViewAdapter(
         holder.availabilityGraph.availability = benchItem.availability.rawData
         with(holder.view) {
             tag = benchItem
-            setOnClickListener(onClickListener)
+            when (benchItem) {
+                is Person -> {
+                    setOnClickListener(onClickListener)
+                }
+                is RoleItem -> {
+                    setOnClickListener{sortable.subSort(benchItem.role.sort)}
+                }
+            }
         }
     }
 
