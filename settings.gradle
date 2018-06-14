@@ -1,1 +1,6 @@
-include ':app', ':directory', ':branding'
+include ':app'
+include ':profile'
+include ':branding'
+include ':directory'
+include ':benchreport'
+include ':architecture'

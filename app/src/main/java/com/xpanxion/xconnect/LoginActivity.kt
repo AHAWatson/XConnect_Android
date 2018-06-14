@@ -2,12 +2,14 @@ package com.xpanxion.xconnect
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.AsyncTask
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.xpanxion.directory.DirectoryActivity
 import kotlinx.android.synthetic.main.activity_login.*
@@ -66,6 +68,10 @@ class LoginActivity : AppCompatActivity() {
         if (cancel) {
             fieldWithError?.requestFocus()
         } else {
+
+            val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            manager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+
             showProgress(true)
             authTask = UserLoginTask(emailInput, passwordInput)
             authTask!!.execute(null as Void?)
