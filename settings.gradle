@@ -1,6 +1,7 @@
-include ':app', ':login'
+include ':app'
 include ':profile'
 include ':branding'
 include ':directory'
 include ':benchreport'
 include ':architecture'
+include ':login'

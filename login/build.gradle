@@ -41,6 +41,6 @@ dependencies {
     implementation project(':branding')
     implementation project(':benchreport')
     implementation project(':architecture')
-    implementation project(path: ':profile')
+    implementation project(':profile')
 }
 
