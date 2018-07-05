@@ -1,4 +1,4 @@
-package com.xpanxion.xconnect
+package com.xpanxion.login
 
 import android.content.Context
 import java.util.regex.Pattern

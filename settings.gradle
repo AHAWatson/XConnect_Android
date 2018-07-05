@@ -1,4 +1,4 @@
-include ':app'
+include ':app', ':login'
 include ':profile'
 include ':branding'
 include ':directory'
