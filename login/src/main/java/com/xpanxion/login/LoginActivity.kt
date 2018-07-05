@@ -1,12 +1,12 @@
-package com.xpanxion.xconnect
+package com.xpanxion.login
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.AsyncTask
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity() {
 
     companion object {
-        private val DUMMY_CREDENTIALS = arrayOf("awatson@xpanxion.com:password")
+        private val DUMMY_CREDENTIALS = arrayOf("jmarvin@xpanxion.com:password")
     }
 
     private var authTask: UserLoginTask? = null
