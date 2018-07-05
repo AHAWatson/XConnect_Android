@@ -23,5 +23,9 @@ class RoleItem(
         return view
     }
 
+    fun updateAvailability(){
+        this.availability = CompositeAvailability(persons)
+    }
+
     override fun getGraphMaximum() = graph_maximum
 }
