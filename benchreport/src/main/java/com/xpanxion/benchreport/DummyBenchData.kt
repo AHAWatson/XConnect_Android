@@ -33,6 +33,7 @@ class DummyBenchData : BenchData {
                     roleItems.add(RoleItem(person))
                 } else {
                     result[0].persons.add(person)
+                    result[0].updateAvailability()
                 }
             }
         }

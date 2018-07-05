@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 
 abstract class BenchItem(
-        val availability: Availability
+        var availability: Availability
 ) {
     abstract fun getTagView(context: Context): View
 
