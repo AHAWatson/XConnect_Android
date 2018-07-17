@@ -21,14 +21,14 @@ android {
 }
 
 dependencies {
-    implementation dependency.dependecy_fileTree
-    implementation dependency.dependency_kotlin
-    implementation dependency.dependency_appcombat
-    implementation dependency.dependency_supportDesign
-    implementation dependency.dependency_support
-    implementation dependency.dependency_recyclerview
-    implementation dependency.dependency_cardview
-    implementation dependency.dependency_constraint
+    implementation dependency.fileTree
+    implementation dependency.kotlin
+    implementation dependency.appcombat
+    implementation dependency.supportDesign
+    implementation dependency.support
+    implementation dependency.recyclerview
+    implementation dependency.cardview
+    implementation dependency.constraint
     testImplementation dependency.test_junit
     androidTestImplementation dependency.test_runner
     androidTestImplementation dependency.test_espresso
