@@ -22,6 +22,7 @@
         android:textSize="18dp" />
 
     <ImageView
+        android:id="@+id/person_star"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_margin="10dp"

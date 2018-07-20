@@ -1,13 +1,16 @@
 package com.xpanxion.profile
 
 import android.os.Bundle
+import android.os.Debug
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.google.android.gms.common.internal.ServiceSpecificExtraArgs
 import com.xpanxion.architecture.*
 
 private const val ID_KEY = "ID_KEY"
@@ -23,12 +26,15 @@ class ProfileFragment : TitledBackHandlerFragment() {
 
     private var id: Long?
 
+
     init {
         title = "Profile"
         id = arguments?.getLong(ID_KEY)
+
     }
 
     companion object {
+        private lateinit var person : Person
         fun newInstance(person: Person): ProfileFragment {
             val fragment = ProfileFragment()
             val args = Bundle()
@@ -41,8 +47,14 @@ class ProfileFragment : TitledBackHandlerFragment() {
             args.putString(LOCATION_KEY, person.location.toString())
             args.putFloatArray(AVAILABILITY_KEY, person.availability.rawData.toFloatArray())
             fragment.arguments = args
+            this.person = person
             return fragment
         }
+
+        fun updatePersonFavorited(starred: Boolean){
+            person.starred = starred
+        }
+
     }
 
     override fun onCreateView(
@@ -73,8 +85,35 @@ class ProfileFragment : TitledBackHandlerFragment() {
         arguments?.getParcelableArray(SKILLS_KEY).let { skills ->
             recyclerView.adapter = SkillItemRecyclerViewAdapter(skills as Array<Skill>)
         }
+        val star = view.findViewById<ImageView>(R.id.profile_star_button)
+        setStar(star,arguments?.getBoolean(STARRED_KEY)!!)
+        star.setOnClickListener{
+
+            if(!arguments?.getBoolean(STARRED_KEY)!!){
+                arguments?.putBoolean(STARRED_KEY, true)
+
+            }else{
+                arguments?.putBoolean(STARRED_KEY, false)
+            }
+            setStar(star,arguments?.getBoolean(STARRED_KEY)!!)
+            println(arguments?.getBoolean(STARRED_KEY)!!)
+        }
+
         return view
     }
 
     override fun onBackPressed() = false
+
+    private fun setStar(star : ImageView, starred : Boolean){
+        if(!starred){
+            star.setImageResource(R.drawable.star_unchecked)
+        }else{
+            star.setImageResource(R.drawable.star_checked)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        updatePersonFavorited(arguments?.getBoolean(STARRED_KEY)!!)
+    }
 }
