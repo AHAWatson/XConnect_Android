@@ -29,6 +29,7 @@ class ProfileFragment : TitledBackHandlerFragment() {
     }
 
     companion object {
+        private lateinit var person : Person
         fun newInstance(person: Person): ProfileFragment {
             val fragment = ProfileFragment()
             val args = Bundle()
@@ -41,8 +42,10 @@ class ProfileFragment : TitledBackHandlerFragment() {
             args.putString(LOCATION_KEY, person.location.toString())
             args.putFloatArray(AVAILABILITY_KEY, person.availability.rawData.toFloatArray())
             fragment.arguments = args
+            this.person = person
             return fragment
         }
+
     }
 
     override fun onCreateView(
@@ -73,8 +76,27 @@ class ProfileFragment : TitledBackHandlerFragment() {
         arguments?.getParcelableArray(SKILLS_KEY).let { skills ->
             recyclerView.adapter = SkillItemRecyclerViewAdapter(skills as Array<Skill>)
         }
+        val star = view.findViewById<ImageView>(R.id.profile_star_button)
+        setStar(star,arguments?.getBoolean(STARRED_KEY)!!)
+        star.setOnClickListener{
+            arguments?.let{arguments ->
+                val currentStarValue = arguments.getBoolean(STARRED_KEY)
+                setStar(star,!currentStarValue)
+                arguments.putBoolean(STARRED_KEY, !currentStarValue)
+            }
+        }
         return view
     }
 
+
     override fun onBackPressed() = false
+
+    private fun setStar(star : ImageView, starred : Boolean){
+      star.setImageResource(if(starred)R.drawable.star_checked else R.drawable.star_unchecked)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        person.starred = arguments?.getBoolean(STARRED_KEY)!!
+    }
 }

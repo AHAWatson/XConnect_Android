@@ -7,5 +7,6 @@ enum class BenchDataSort(val label: String) {
     SDET("SDET"),
     DEVOPS("DevOps"),
     DEV("Dev"),
-    FA("Functional Analyst")
+    FA("Functional Analyst"),
+    FAVORITE("Favorite")
 }

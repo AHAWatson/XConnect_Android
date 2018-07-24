@@ -67,6 +67,9 @@ class DummyBenchData : BenchData {
             ROLE -> {
                 roleItems
             }
+            FAVORITE->{
+                raw.filter { it.starred }
+            }
             else -> {
                 raw.filter { it.role.sort == sort }.sortedBy { it.availability }
             }
@@ -134,4 +137,6 @@ class DummyBenchData : BenchData {
         val months = listOf("May", "June", "July", "August", "September", "October")
         return Availability(points, months)
     }
+
+
 }
