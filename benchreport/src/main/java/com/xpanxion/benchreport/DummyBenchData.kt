@@ -68,7 +68,7 @@ class DummyBenchData : BenchData {
                 roleItems
             }
             FAVORITE->{
-                raw.sortedBy { !it.starred }
+                raw.filter { it.starred }
             }
             else -> {
                 raw.filter { it.role.sort == sort }.sortedBy { it.availability }

@@ -15,7 +15,7 @@ class SortDialogue : DialogFragment() {
             builder.setTitle("Sort By:")
             val labels = Array(3) { "" }
             val map = HashMap<String, BenchDataSort>()
-            arrayOf(BenchDataSort.ALL, BenchDataSort.ROLE,BenchDataSort.FAVORITE).forEachIndexed { index, sort ->
+            arrayOf(BenchDataSort.ALL, BenchDataSort.ROLE, BenchDataSort.FAVORITE).forEachIndexed { index, sort ->
                 labels[index] = sort.label
                 map[sort.label] = sort
             }
