@@ -21,7 +21,7 @@ private const val STARRED_KEY = "STARRED_KEY"
 private const val LOCATION_KEY = "LOCATION_KEY"
 private const val AVAILABILITY_KEY = "AVAILABILITY_KEY"
 private const val LOCATION_IMAGE_KEY = "LOCATION_IMAGE_KEY"
-private const val NUMBER_KEY = "NUMBER_KEY"
+private const val PHONE_NUMBER_KEY = "PHONE_NUMBER_KEY"
 private const val EMAIL_KEY = "EMAIL_KEY"
 
 class ProfileFragment : TitledBackHandlerFragment() {
@@ -46,7 +46,7 @@ class ProfileFragment : TitledBackHandlerFragment() {
             args.putInt(LOCATION_IMAGE_KEY, person.location.icon)
             args.putString(LOCATION_KEY, person.location.toString())
             args.putFloatArray(AVAILABILITY_KEY, person.availability.rawData.toFloatArray())
-            args.putString(NUMBER_KEY, person.number)
+            args.putString(PHONE_NUMBER_KEY, person.phoneNumber)
             args.putString(EMAIL_KEY, person.email)
             fragment.arguments = args
             this.person = person
@@ -92,8 +92,14 @@ class ProfileFragment : TitledBackHandlerFragment() {
                 arguments.putBoolean(STARRED_KEY, !currentStarValue)
             }
         }
-        view.findViewById<ImageView>(R.id.profile_call_button).setOnClickListener { makePhoneCall() }
-        view.findViewById<ImageView>(R.id.profile_mail_button).setOnClickListener { makeEmail() }
+
+        val phoneButton = view.findViewById<ImageView>(R.id.profile_call_button)
+            phoneButton.setImageResource(if(arguments?.getString(PHONE_NUMBER_KEY).equals("") || arguments?.getString(PHONE_NUMBER_KEY).equals(null))0 else R.drawable.call_icon)
+            phoneButton.setOnClickListener { makePhoneCall() }
+
+        val emailButton = view.findViewById<ImageView>(R.id.profile_mail_button)
+            emailButton.setImageResource(if(arguments?.getString(EMAIL_KEY).equals("") || arguments?.getString(EMAIL_KEY).equals(null) )0 else R.drawable.mail_icon)
+            emailButton.setOnClickListener { makeEmail() }
         return view
     }
 
@@ -104,7 +110,7 @@ class ProfileFragment : TitledBackHandlerFragment() {
     }
 
     private fun makePhoneCall(){
-        var callIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+arguments?.getString(NUMBER_KEY)))
+        var callIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+arguments?.getString(PHONE_NUMBER_KEY)))
         startActivity(callIntent)
     }
 

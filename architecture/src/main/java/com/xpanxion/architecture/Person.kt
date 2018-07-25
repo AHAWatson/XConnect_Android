@@ -14,7 +14,7 @@ class Person(
         val skills: Array<Skill>,
         availability: Availability,
         var starred: Boolean = false,
-        val number: String,
+        val phoneNumber: String,
         val email: String
 ) : BenchItem(availability) {
     override fun getTagView(context: Context): View {
