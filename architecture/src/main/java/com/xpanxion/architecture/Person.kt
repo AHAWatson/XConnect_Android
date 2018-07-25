@@ -13,7 +13,9 @@ class Person(
         val location: Location,
         val skills: Array<Skill>,
         availability: Availability,
-        var starred: Boolean = false
+        var starred: Boolean = false,
+        val number: String,
+        val email: String
 ) : BenchItem(availability) {
     override fun getTagView(context: Context): View {
         val view = LayoutInflater.from(context).inflate(R.layout.person_tag_layout, null)

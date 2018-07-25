@@ -1,6 +1,9 @@
 package com.xpanxion.profile
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -18,6 +21,8 @@ private const val STARRED_KEY = "STARRED_KEY"
 private const val LOCATION_KEY = "LOCATION_KEY"
 private const val AVAILABILITY_KEY = "AVAILABILITY_KEY"
 private const val LOCATION_IMAGE_KEY = "LOCATION_IMAGE_KEY"
+private const val NUMBER_KEY = "NUMBER_KEY"
+private const val EMAIL_KEY = "EMAIL_KEY"
 
 class ProfileFragment : TitledBackHandlerFragment() {
 
@@ -41,6 +46,8 @@ class ProfileFragment : TitledBackHandlerFragment() {
             args.putInt(LOCATION_IMAGE_KEY, person.location.icon)
             args.putString(LOCATION_KEY, person.location.toString())
             args.putFloatArray(AVAILABILITY_KEY, person.availability.rawData.toFloatArray())
+            args.putString(NUMBER_KEY, person.number)
+            args.putString(EMAIL_KEY, person.email)
             fragment.arguments = args
             this.person = person
             return fragment
@@ -85,14 +92,25 @@ class ProfileFragment : TitledBackHandlerFragment() {
                 arguments.putBoolean(STARRED_KEY, !currentStarValue)
             }
         }
+        view.findViewById<ImageView>(R.id.profile_call_button).setOnClickListener { makePhoneCall() }
+        view.findViewById<ImageView>(R.id.profile_mail_button).setOnClickListener { makeEmail() }
         return view
     }
-
 
     override fun onBackPressed() = false
 
     private fun setStar(star : ImageView, starred : Boolean){
       star.setImageResource(if(starred)R.drawable.star_checked else R.drawable.star_unchecked)
+    }
+
+    private fun makePhoneCall(){
+        var callIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+arguments?.getString(NUMBER_KEY)))
+        startActivity(callIntent)
+    }
+
+    private fun makeEmail(){
+        var emailIntent = Intent(Intent.ACTION_SENDTO,Uri.parse("mailto:" + arguments?.getString(EMAIL_KEY)))
+        startActivity(emailIntent)
     }
 
     override fun onDestroyView() {
