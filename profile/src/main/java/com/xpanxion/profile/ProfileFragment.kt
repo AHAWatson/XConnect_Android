@@ -1,6 +1,9 @@
 package com.xpanxion.profile
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -18,6 +21,8 @@ private const val STARRED_KEY = "STARRED_KEY"
 private const val LOCATION_KEY = "LOCATION_KEY"
 private const val AVAILABILITY_KEY = "AVAILABILITY_KEY"
 private const val LOCATION_IMAGE_KEY = "LOCATION_IMAGE_KEY"
+private const val PHONE_NUMBER_KEY = "PHONE_NUMBER_KEY"
+private const val EMAIL_KEY = "EMAIL_KEY"
 
 class ProfileFragment : TitledBackHandlerFragment() {
 
@@ -41,6 +46,8 @@ class ProfileFragment : TitledBackHandlerFragment() {
             args.putInt(LOCATION_IMAGE_KEY, person.location.icon)
             args.putString(LOCATION_KEY, person.location.toString())
             args.putFloatArray(AVAILABILITY_KEY, person.availability.rawData.toFloatArray())
+            args.putString(PHONE_NUMBER_KEY, person.phoneNumber)
+            args.putString(EMAIL_KEY, person.email)
             fragment.arguments = args
             this.person = person
             return fragment
@@ -85,14 +92,31 @@ class ProfileFragment : TitledBackHandlerFragment() {
                 arguments.putBoolean(STARRED_KEY, !currentStarValue)
             }
         }
+
+        val phoneButton = view.findViewById<ImageView>(R.id.profile_call_button)
+            phoneButton.setImageResource(if(arguments?.getString(PHONE_NUMBER_KEY).equals("") || arguments?.getString(PHONE_NUMBER_KEY).equals(null))0 else R.drawable.call_icon)
+            phoneButton.setOnClickListener { makePhoneCall() }
+
+        val emailButton = view.findViewById<ImageView>(R.id.profile_mail_button)
+            emailButton.setImageResource(if(arguments?.getString(EMAIL_KEY).equals("") || arguments?.getString(EMAIL_KEY).equals(null) )0 else R.drawable.mail_icon)
+            emailButton.setOnClickListener { makeEmail() }
         return view
     }
-
 
     override fun onBackPressed() = false
 
     private fun setStar(star : ImageView, starred : Boolean){
       star.setImageResource(if(starred)R.drawable.star_checked else R.drawable.star_unchecked)
+    }
+
+    private fun makePhoneCall(){
+        var callIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+arguments?.getString(PHONE_NUMBER_KEY)))
+        startActivity(callIntent)
+    }
+
+    private fun makeEmail(){
+        var emailIntent = Intent(Intent.ACTION_SENDTO,Uri.parse("mailto:" + arguments?.getString(EMAIL_KEY)))
+        startActivity(emailIntent)
     }
 
     override fun onDestroyView() {

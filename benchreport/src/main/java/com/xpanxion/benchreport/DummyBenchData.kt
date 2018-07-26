@@ -88,7 +88,10 @@ class DummyBenchData : BenchData {
                 createFalseName(),
                 createFalseLocation(),
                 createFalseSkills(),
-                createFalseAvailability()
+                createFalseAvailability(),
+                false,
+                "1234567890",
+                "jmarvin@xpanxion.com"
         )
     }
 
