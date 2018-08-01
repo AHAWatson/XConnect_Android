@@ -29,6 +29,7 @@ dependencies {
     implementation dependency.recyclerview
     implementation dependency.cardview
     implementation dependency.constraint
+    implementation dependency.apache_poi
     testImplementation dependency.test_junit
     androidTestImplementation dependency.test_runner
     androidTestImplementation dependency.test_espresso

@@ -1,6 +1,7 @@
 package com.xpanxion.benchreport
 
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.GridLayoutManager
@@ -16,8 +17,7 @@ import kotlinx.android.synthetic.main.fragment_layout.*
 
 class BenchFragment : TitledBackHandlerFragment(), SortableBenchData {
 
-    private val benchData = DummyBenchData()
-
+    private val benchData = UserBenchData(resources.openRawResource(R.raw.benchreportsheet))
     init {
         title = "Availability"
     }
