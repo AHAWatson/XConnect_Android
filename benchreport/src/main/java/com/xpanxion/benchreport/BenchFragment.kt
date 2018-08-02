@@ -1,7 +1,6 @@
 package com.xpanxion.benchreport
 
 import android.content.Context
-import android.content.res.Resources
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.GridLayoutManager
@@ -17,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_layout.*
 
 class BenchFragment : TitledBackHandlerFragment(), SortableBenchData {
 
-    private val benchData = UserBenchData(resources.openRawResource(R.raw.benchreportsheet))
+    private lateinit var benchData: BenchData
     init {
         title = "Availability"
     }
@@ -39,6 +38,7 @@ class BenchFragment : TitledBackHandlerFragment(), SortableBenchData {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { columnCount = it.getInt(ARG_COLUMN_COUNT) }
+        benchData = UserBenchData(resources)
     }
 
     override fun onCreateView(
