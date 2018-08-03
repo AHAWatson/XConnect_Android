@@ -4,8 +4,6 @@ import android.content.res.Resources
 import com.xpanxion.architecture.*
 import com.xpanxion.architecture.BenchDataSort.*
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
-
-
 import java.util.*
 
 class UserBenchData(res: Resources) : BenchData {
@@ -85,22 +83,22 @@ class UserBenchData(res: Resources) : BenchData {
             val sheet = workbook.getSheet("US Bench")
             val rows = sheet.iterator()
             rows.next()
-            var infocells = rows.next().iterator()
+            val infocells = rows.next().iterator()
             infocells.next();infocells.next();infocells.next();infocells.next();infocells.next()
             val months = listOf(infocells.next().toString(),infocells.next().toString(),infocells.next().toString(),infocells.next().toString(),infocells.next().toString(),infocells.next().toString())
             rows.next()
             while (rows.hasNext()) {
                 val currentRow = rows.next()
                 val cellsInRow = currentRow.iterator()
-                var id = cellsInRow.next().numericCellValue
-                var name = cellsInRow.next().toString()
-                var location = cellsInRow.next().toString()
+                val id = cellsInRow.next().numericCellValue
+                val name = cellsInRow.next().toString()
+                val location = cellsInRow.next().toString()
                 var practice = cellsInRow.next().toString()
-                var track = cellsInRow.next().toString()
-                var availability = arrayOf(cellsInRow.next().toString(),cellsInRow.next().toString(),cellsInRow.next().toString(),cellsInRow.next().toString(),cellsInRow.next().toString(),cellsInRow.next().toString())
+                val track = cellsInRow.next().toString()
+                val availability = arrayOf(cellsInRow.next().toString(),cellsInRow.next().toString(),cellsInRow.next().toString(),cellsInRow.next().toString(),cellsInRow.next().toString(),cellsInRow.next().toString())
                 var lbd = cellsInRow.next().toString()
                 var lastAcount = cellsInRow.next().toString()
-                var tempPerson=Person(id.toLong(),
+                val tempPerson=Person(id.toLong(),
                         getRole(track),
                         getName(name),
                         getLocation(location),
@@ -118,25 +116,25 @@ class UserBenchData(res: Resources) : BenchData {
             excelFile.close()
 
         }catch(e:Exception){
-            println("FILE EXCEPTION: " + e)
+            println("FILE EXCEPTION: $e")
         }
         return result
     }
 
     private fun getAvailability(availability: Array<String>, months: List<String>): Availability {
-        var rawData: Array<Float> = arrayOf(availability[0].toFloat() * 100,availability[1].toFloat() * 100,availability[2].toFloat() * 100,availability[3].toFloat() * 100,availability[4].toFloat() * 100,availability[5].toFloat() * 100)
+        val rawData: Array<Float> = arrayOf(availability[0].toFloat() * 100,availability[1].toFloat() * 100,availability[2].toFloat() * 100,availability[3].toFloat() * 100,availability[4].toFloat() * 100,availability[5].toFloat() * 100)
         return Availability(rawData,months)
 
     }
 
     private fun getRole(track: String): Role {
         var cellRole = track.substringAfter(" - ")
-        var level = 2
+        val level = convertRomanToInt(cellRole.substringAfterLast(" "))
         cellRole = cellRole.substringBeforeLast(" ")
         return when (cellRole) {
             "Quality Assurance" -> Qa(level)
             "SDET" -> Sdet(level)
-            "DevOps" -> DevOps(level)
+            "DevOps/Cloud" -> DevOps(level)
             "Developer" -> Developer(level)
             "Functional Analyst" -> FunctionalAnalyst(level)
             else -> {
@@ -168,9 +166,23 @@ class UserBenchData(res: Resources) : BenchData {
 
     private fun createFalseSkills(): Array<Skill> {
         val number = 3 + Random().nextInt(3)
-        return Array(number, { i ->
+        return Array(number
+        ) { i ->
             Skill.subClassInstances.shuffled()[0]
         }
-        )
+    }
+
+    private fun convertRomanToInt(roman: String): Int{
+        return when(roman.toUpperCase()){
+            "I" -> 1
+            "II" -> 2
+            "III" -> 3
+            "IV" -> 4
+            "V" -> 5
+            "VI" -> 6
+            else -> {
+                1
+            }
+        }
     }
 }
