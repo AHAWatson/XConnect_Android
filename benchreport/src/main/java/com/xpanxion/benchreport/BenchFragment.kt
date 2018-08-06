@@ -16,8 +16,7 @@ import kotlinx.android.synthetic.main.fragment_layout.*
 
 class BenchFragment : TitledBackHandlerFragment(), SortableBenchData {
 
-    private val benchData = DummyBenchData()
-
+    private lateinit var benchData: BenchData
     init {
         title = "Availability"
     }
@@ -39,6 +38,7 @@ class BenchFragment : TitledBackHandlerFragment(), SortableBenchData {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { columnCount = it.getInt(ARG_COLUMN_COUNT) }
+        benchData = UserBenchData(resources)
     }
 
     override fun onCreateView(
