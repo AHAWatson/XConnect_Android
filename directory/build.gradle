@@ -30,6 +30,9 @@ dependencies {
     implementation dependency.supportDesign
     implementation dependency.support
     implementation dependency.constraint
+    implementation ('com.amazonaws:aws-android-sdk-mobile-client:2.6.+@aar') { transitive = true }
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.6.+'
+    implementation 'com.amazonaws:aws-android-sdk-cognito:2.6.+'
     testImplementation dependency.test_junit
     androidTestImplementation dependency.test_runner
     androidTestImplementation dependency.test_espresso
